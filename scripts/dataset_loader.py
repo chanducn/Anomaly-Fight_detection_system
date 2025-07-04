@@ -6,7 +6,7 @@ from PIL import Image
 
 
 class FrameSequenceDataset(Dataset):
-    def __intit__(self,root_dir,split='train',sequence_length=16,transform =None):
+    def __init__(self, data_dir, split='train', sequence_length=16, transform=None):
         self.data = []
         self.labels = []
         self.sequence_length = sequence_length
@@ -14,7 +14,7 @@ class FrameSequenceDataset(Dataset):
 
 
         # here we eill defin path
-        self.root_dir = os.path.join(root_dir,split)
+        self.root_dir = os.path.join(data_dir,split)
         self.classes = ['NonFight','Fight'] # 0 - Nonfight , 1 - Fight
 
         #Traverse each class folder and collect clip paths
@@ -28,7 +28,7 @@ class FrameSequenceDataset(Dataset):
     def __len__(self):
         return len(self.data)
     
-    def __getitem__(self, idx) -> Any:
+    def __getitem__(self, idx):
         clip_path = self.data[idx]
         label = self.labels[idx]
         frames = []

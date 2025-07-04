@@ -33,32 +33,28 @@ def extract_frames_V(video_path,output_dir,max_frames=16):
     cap.release()
 
 
-def process_data(input_base_dir,output_base_dir):
+def process_data(input_base_dir, output_base_dir):
     class_map = {
-        'Fight':'Fight',
-        'Non Fight':'Non Fight'
+        'Fight': 'Fight',
+        'NonFight': 'NonFight'
     }
 
-    # Processing both training and validation sets
-    for split in ['train','val']:
-        for folder in os.listdir(os.path.join(input_base_dir,split)):
+    for split in ['train', 'val']:
+        for folder in os.listdir(os.path.join(input_base_dir, split)):
+            print(f"Found folder: {folder}")
             class_name = class_map.get(folder)
             if class_name is None:
+                print(f"Skipping folder: {folder}")
                 continue
 
-            # Full path to the input Folder
-            folder_path = os.path.join(input_base_dir,split,folder)
+            folder_path = os.path.join(input_base_dir, split, folder)
+            output_folder = os.path.join(output_base_dir, split, class_name)
+            os.makedirs(output_folder, exist_ok=True)
 
-
-            output_folder = os.path.join(output_base_dir,split,class_name)
-            os.makedirs(output_folder,exist_ok=True)
-
-
-            for idx,video in enumerate(os.listdir(folder_path)):
-                video_path = os.path.join(folder,video)
-                # create a unique folder for esch videos fames sequence
-                clip_output = os.path.join(output_folder,f"{folder.replace(' ','' )}_{idx}")
-                extract_frames_V(video_path,clip_output)
+            for idx, video in enumerate(os.listdir(folder_path)):
+                video_path = os.path.join(folder_path, video)
+                clip_output = os.path.join(output_folder, f"{folder.replace(' ', '')}_{idx}")
+                extract_frames_V(video_path, clip_output)
 
                 # Example usage to process everything
 process_data("dataset", "processed_data")
